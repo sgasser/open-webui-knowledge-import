@@ -1,0 +1,11 @@
+# KB Automation Requirements
+# Python 3.10+ required
+
+# Core dependencies (required)
+requests>=2.31.0
+urllib3>=2.0.0
+
+# Optional dependencies
+# Install with: pip install python-dotenv
+# If not installed, you can still use environment variables or --api-key flag
+# python-dotenv>=1.0.0

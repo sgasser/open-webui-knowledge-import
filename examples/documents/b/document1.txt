@@ -1,0 +1,11 @@
+Sample Document B1
+
+This is a sample text document for knowledge base 'b'.
+
+Topic B covers different aspects:
+1. First aspect - detailed explanation here
+2. Second aspect - more information about this topic
+3. Third aspect - concluding thoughts
+
+The kb-automation tool will create a separate knowledge base for
+subdirectory 'b' and upload all files found in this directory.

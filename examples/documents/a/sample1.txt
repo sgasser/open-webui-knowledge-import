@@ -1,0 +1,11 @@
+Sample Document A1
+
+This is a sample text document for knowledge base 'a'.
+
+It contains information about topic A, which includes:
+- Example data point 1
+- Example data point 2
+- Example data point 3
+
+This document will be automatically uploaded to the knowledge base named 'a'
+when the kb-automation script is run.
