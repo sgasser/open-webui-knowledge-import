@@ -2,17 +2,18 @@
 
 import logging
 import time
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Callable, Optional, TypedDict
+from typing import TypedDict
 
 import requests
 
 from .config import (
-    PROCESSING_TIMEOUT_SECONDS,
-    PROCESSING_CHECK_INTERVAL,
-    REQUEST_TIMEOUT,
     MAX_CONCURRENT_UPLOADS,
+    PROCESSING_CHECK_INTERVAL,
+    PROCESSING_TIMEOUT_SECONDS,
+    REQUEST_TIMEOUT,
 )
 
 logger = logging.getLogger(__name__)
@@ -20,9 +21,9 @@ logger = logging.getLogger(__name__)
 
 class UploadResult(TypedDict):
     """Result of file upload operation."""
-    file_id: Optional[str]
+    file_id: str | None
     success: bool
-    error: Optional[str]
+    error: str | None
     processing_time: float
 
 
@@ -30,7 +31,7 @@ def upload_file(
     session: requests.Session,
     base_url: str,
     file_path: Path,
-    progress_callback: Optional[Callable[[str], None]] = None
+    progress_callback: Callable[[str], None] | None = None
 ) -> UploadResult:
     """Upload file and wait for processing.
 
@@ -139,7 +140,7 @@ def upload_files_concurrent(
     session: requests.Session,
     base_url: str,
     file_paths: list[Path],
-    progress_callback: Optional[Callable[[str], None]] = None
+    progress_callback: Callable[[str], None] | None = None
 ) -> list[UploadResult]:
     """Upload multiple files concurrently.
 
@@ -157,7 +158,9 @@ def upload_files_concurrent(
         >>> successful = [r for r in results if r["success"]]
         >>> print(f"Uploaded {len(successful)} files")
     """
-    logger.info(f"Uploading {len(file_paths)} files concurrently (max {MAX_CONCURRENT_UPLOADS} workers)")
+    logger.info(
+        f"Uploading {len(file_paths)} files concurrently (max {MAX_CONCURRENT_UPLOADS} workers)"
+    )
 
     results = []
     with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_UPLOADS) as executor:
@@ -171,7 +174,7 @@ def upload_files_concurrent(
     return results
 
 
-def get_existing_kb(session: requests.Session, base_url: str, name: str) -> Optional[str]:
+def get_existing_kb(session: requests.Session, base_url: str, name: str) -> str | None:
     """Check if knowledge base with name already exists.
 
     Args:
@@ -251,7 +254,9 @@ def create_kb(session: requests.Session, base_url: str, name: str) -> str:
         raise ConnectionError(f"Failed to create KB '{name}': {e}")
 
 
-def add_files_to_kb(session: requests.Session, base_url: str, kb_id: str, file_ids: list[str]) -> None:
+def add_files_to_kb(
+    session: requests.Session, base_url: str, kb_id: str, file_ids: list[str]
+) -> None:
     """Add files to knowledge base.
 
     Args:

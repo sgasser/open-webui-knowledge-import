@@ -42,7 +42,8 @@ def preview_import(structure: dict) -> None:
             print(f"     • {f.name} ({size_kb:.1f} KB)")
 
     print("\n" + "=" * 60)
-    print(f"Total: {len(structure)} knowledge bases, {sum(len(d['files']) for d in structure.values())} files")
+    total_files = sum(len(d['files']) for d in structure.values())
+    print(f"Total: {len(structure)} knowledge bases, {total_files} files")
     print("=" * 60)
 
 
@@ -66,7 +67,8 @@ def print_summary(results: dict) -> None:
 
     print("=" * 60)
     if skipped_count > 0:
-        print(f"Imported: {success_count - skipped_count}/{len(results)} knowledge bases, {file_count} files")
+        imported_count = success_count - skipped_count
+        print(f"Imported: {imported_count}/{len(results)} knowledge bases, {file_count} files")
         print(f"Skipped: {skipped_count} (already existed)")
     else:
         print(f"Imported: {success_count}/{len(results)} knowledge bases, {file_count} files")

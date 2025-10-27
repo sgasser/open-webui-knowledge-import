@@ -8,4 +8,4 @@ It contains information about topic A, which includes:
 - Example data point 3
 
 This document will be automatically uploaded to the knowledge base named 'a'
-when the kb-automation script is run.
+when the knowledge import script is run.

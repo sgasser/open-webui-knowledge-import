@@ -30,10 +30,22 @@ except ImportError:
     pass
 
 from knowledge_import import __version__
+from knowledge_import.api import (
+    add_files_to_kb,
+    create_kb,
+    get_existing_kb,
+    upload_files_concurrent,
+)
 from knowledge_import.scanner import scan_directory
 from knowledge_import.session import create_session, health_check
-from knowledge_import.api import get_existing_kb, create_kb, upload_files_concurrent, add_files_to_kb
-from knowledge_import.ui import print_info, print_success, print_error, print_warning, preview_import, print_summary
+from knowledge_import.ui import (
+    preview_import,
+    print_error,
+    print_info,
+    print_success,
+    print_summary,
+    print_warning,
+)
 
 
 def setup_logging(verbose: bool = False) -> None:
@@ -86,7 +98,7 @@ def import_knowledge_bases(structure: dict, base_url: str, api_key: str) -> dict
 
                 # Create KB
                 kb_id = create_kb(session, base_url, kb_name)
-                print_success(f"Created knowledge base")
+                print_success("Created knowledge base")
 
                 # Upload files concurrently
                 upload_results = upload_files_concurrent(
@@ -230,14 +242,22 @@ Environment:
             print_error("Is Open WebUI running and accessible?")
             return 1
 
-        # Confirm
-        print("⚠ Press Enter to continue, Ctrl+C to cancel...", end=" ")
-        try:
-            input()
-        except KeyboardInterrupt:
-            print("\n✗ Cancelled")
-            logger.info("Import cancelled by user")
-            return 1
+        # Confirm (only in interactive mode)
+        if sys.stdin.isatty():
+            print("⚠ Press Enter to continue, Ctrl+C to cancel...", end=" ")
+            try:
+                input()
+            except KeyboardInterrupt:
+                print("\n✗ Cancelled")
+                logger.info("Import cancelled by user")
+                return 1
+            except EOFError:
+                print("\n✗ Cancelled (no input available)")
+                logger.info("Import cancelled - no input available")
+                return 1
+        else:
+            # Non-interactive mode - auto-proceed
+            logger.info("Non-interactive mode detected - auto-proceeding")
 
         # Import
         results = import_knowledge_bases(structure, args.base_url, args.api_key)

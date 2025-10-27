@@ -1,4 +1,4 @@
-# KB Automation Requirements
+# Open WebUI Knowledge Import Requirements
 # Python 3.10+ required
 
 # Core dependencies (required)

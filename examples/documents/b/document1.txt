@@ -7,5 +7,5 @@ Topic B covers different aspects:
 2. Second aspect - more information about this topic
 3. Third aspect - concluding thoughts
 
-The kb-automation tool will create a separate knowledge base for
+The knowledge import tool will create a separate knowledge base for
 subdirectory 'b' and upload all files found in this directory.

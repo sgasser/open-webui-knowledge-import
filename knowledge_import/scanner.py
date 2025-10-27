@@ -2,7 +2,7 @@
 
 import logging
 from pathlib import Path
-from typing import Optional, TypedDict
+from typing import TypedDict
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ class KBData(TypedDict):
 
 def scan_directory(
     directory: Path,
-    extensions: Optional[list[str]] = None
+    extensions: list[str] | None = None
 ) -> dict[str, KBData]:
     """Scan directory and return KB structure.
 

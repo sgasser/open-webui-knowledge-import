@@ -1,15 +1,15 @@
 """Session management with retry logic."""
 
 import logging
+from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Generator
 from urllib.parse import urlparse
 
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .config import MAX_RETRIES, RETRY_BACKOFF_FACTOR, RETRY_STATUS_CODES, REQUEST_TIMEOUT
+from .config import MAX_RETRIES, REQUEST_TIMEOUT, RETRY_BACKOFF_FACTOR, RETRY_STATUS_CODES
 
 logger = logging.getLogger(__name__)
 
@@ -113,7 +113,7 @@ def create_session(base_url: str, api_key: str) -> Generator[requests.Session, N
     except requests.HTTPError as e:
         logger.error(f"Authentication failed: HTTP {e.response.status_code}")
         if e.response.status_code == 401:
-            raise ConnectionError(f"Authentication failed: Invalid API key")
+            raise ConnectionError("Authentication failed: Invalid API key")
         raise ConnectionError(f"Authentication failed: {e}")
     except requests.RequestException as e:
         logger.error(f"Authentication failed: {e}")
@@ -158,7 +158,7 @@ def health_check(base_url: str, api_key: str) -> bool:
     except requests.HTTPError as e:
         logger.error(f"Health check failed: HTTP {e.response.status_code}")
         if e.response.status_code == 401:
-            raise ConnectionError(f"Health check failed: Invalid API key")
+            raise ConnectionError("Health check failed: Invalid API key")
         raise ConnectionError(f"Health check failed: HTTP {e.response.status_code}")
     except requests.RequestException as e:
         logger.error(f"Health check failed: {e}")

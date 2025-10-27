@@ -46,10 +46,25 @@ export OPENWEBUI_URL=http://localhost:8080
 
 Open WebUI → Settings → Account → API Key
 
-## Testing
+## Development
 
+### Run Tests
 ```bash
 python3 test_knowledge_import.py
+```
+
+### Code Quality
+```bash
+# Check code
+ruff check knowledge_import/ knowledge_import.py test_knowledge_import.py
+
+# Auto-fix issues
+ruff check --fix knowledge_import/ knowledge_import.py test_knowledge_import.py
+```
+
+### Preview Import
+```bash
+./knowledge_import.py --dry-run examples/documents
 ```
 
 ## License

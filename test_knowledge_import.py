@@ -10,10 +10,10 @@ from pathlib import Path
 # Test imports
 print("Testing imports...")
 try:
-    from knowledge_import import __version__
     from knowledge_import.config import MAX_RETRIES, PROCESSING_TIMEOUT_SECONDS
-    from knowledge_import.session import validate_url, validate_api_key
     from knowledge_import.scanner import scan_directory
+    from knowledge_import.session import validate_api_key, validate_url
+
     print("✓ All imports successful")
 except ImportError as e:
     print(f"✗ Import failed: {e}")
